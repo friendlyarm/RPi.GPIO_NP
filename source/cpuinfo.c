@@ -46,7 +46,7 @@ char *get_cpuinfo_revision(char *revision)
     {
       nanopi_found=1;
       rpi_found = 1;
-      //printf("BAPI: NanoPi!\n");
+      //printf("NPAPI: NanoPi!\n");
     }
     sscanf(buffer, "Revision	: %s", revision);
   }

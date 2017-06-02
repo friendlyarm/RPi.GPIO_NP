@@ -658,7 +658,7 @@ PyMODINIT_FUNC initGPIO(void)
 
    // detect board revision and set up accordingly
    revision = get_rpi_revision();
-   printf("BAPI: revision(%d)\n",revision);
+   // printf("NPAPI: revision(%d)\n",revision);
    if (revision == -1)
    {
       PyErr_SetString(PyExc_RuntimeError, "This module can only be run on a NanoPi NEO/NEO2!");

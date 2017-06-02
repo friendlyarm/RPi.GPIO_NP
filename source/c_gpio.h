@@ -51,7 +51,7 @@ void cleanup(void);
 #define NP_DEBUG   0
 
 #ifdef NP_DEBUG
-#define	D	printf("BAPI: __%d__(%s:%s)\n",__LINE__,__FUNCTION__,__FILE__);
+#define	D	printf("NPAPI: __%d__(%s:%s)\n",__LINE__,__FUNCTION__,__FILE__);
 #else
 #define D
 #endif

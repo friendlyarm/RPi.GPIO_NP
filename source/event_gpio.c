@@ -207,7 +207,7 @@ D    snprintf(filename, sizeof(filename), "/sys/class/gpio/gpio%d/value", gpioSy
         return -1;
 
 #ifdef NP_DEBUG
-    printf("BAPI: __%d__(%s:%s) value = %c, %d\n",__LINE__,__FUNCTION__,__FILE__, buf, atoi(&buf));
+    printf("NPAPI: __%d__(%s:%s) value = %c, %d\n",__LINE__,__FUNCTION__,__FILE__, buf, atoi(&buf));
 #endif
 
     close(fd);
