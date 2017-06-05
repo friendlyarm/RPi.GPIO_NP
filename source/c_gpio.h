@@ -48,9 +48,9 @@ void cleanup(void);
 #define PUD_DOWN 2
 #define PUD_UP   1
 
-#define NP_DEBUG   0
+#define NP_DEBUG 0
 
-#ifdef NP_DEBUG
+#if NP_DEBUG
 #define	D	printf("NPAPI: __%d__(%s:%s)\n",__LINE__,__FUNCTION__,__FILE__);
 #else
 #define D

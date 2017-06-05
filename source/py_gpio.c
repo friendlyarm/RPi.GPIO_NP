@@ -156,7 +156,7 @@ static PyObject *py_setup_channel(PyObject *self, PyObject *args, PyObject *kwar
       return NULL;
 
    func = gpio_function(gpio);//!!!! has not modify 
-#ifdef NP_DEBUG
+#if NP_DEBUG
    if (gpio_warnings &&                             // warnings enabled and
        ((func != 0 && func != 1) ||                 // (already one of the alt functions or
        (gpio_direction[gpio] == -1 && func == 1)))  // already an output not set from this program)

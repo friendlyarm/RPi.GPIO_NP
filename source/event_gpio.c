@@ -206,7 +206,7 @@ D    snprintf(filename, sizeof(filename), "/sys/class/gpio/gpio%d/value", gpioSy
     if (read(fd, &buf, 1) != 1)
         return -1;
 
-#ifdef NP_DEBUG
+#if NP_DEBUG
     printf("NPAPI: __%d__(%s:%s) value = %c, %d\n",__LINE__,__FUNCTION__,__FILE__, buf, atoi(&buf));
 #endif
 
