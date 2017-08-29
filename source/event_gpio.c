@@ -60,7 +60,7 @@ int event_occurred[64] = { 0 };
 int thread_running = 0;
 int epfd = -1;
 
-/***  change physToGpio_BP & pinTobcm_BP into physToGpioR3  ***/
+/***  change physToGpio_neo & pinTobcm_BP into physToGpioR3  ***/
 unsigned int gpioToSysPin(unsigned int gpio)
 {
 	int i;
@@ -70,7 +70,7 @@ unsigned int gpioToSysPin(unsigned int gpio)
 	//There is no matter with mode
 	for(i = 0;i < lenBP;i++)
 	{
-		if(*(physToGpio_BP + i) == gpio)
+		if(*(physToGpio_neo + i) == gpio)
 		{
 			gpioSys = *(physToGpioR3 + i);
 			return gpioSys;

@@ -27,6 +27,7 @@ SOFTWARE.
 #include "cpuinfo.h"
 #include "constants.h"
 #include "common.h"
+#include "boardtype_friendlyelec.h"
 
 static PyObject *rpi_revision;
 static int gpio_warnings = 1;
@@ -656,24 +657,42 @@ PyMODINIT_FUNC initGPIO(void)
    for (i=0; i<64; i++)
       gpio_direction[i] = -1;
 
-   // detect board revision and set up accordingly
-   revision = get_rpi_revision();
-   // printf("NPAPI: revision(%d)\n",revision);
-   if (revision == -1)
-   {
-      PyErr_SetString(PyExc_RuntimeError, "This module can only be run on a NanoPi NEO/NEO2!");
-      setup_error = 1;
-#if PY_MAJOR_VERSION > 2
-      return NULL;
-#else
-      return;
-#endif
-   } else if (revision == 1) {
-      pin_to_gpio = &physToGpio_BP;//&pin_to_gpio_rev1;
-   } else { // assume revision 2
-      //pin_to_gpio = &pin_to_gpio_rev2;
-      pin_to_gpio = NULL;			//here is the 'pin_to_gpio' initialization
-   }
+    BoardHardwareInfo* retBoardInfo;
+    int boardId;
+    boardId = getBoardType(&retBoardInfo);
+    if (boardId >= 0) {
+      if (boardId > ALLWINNER_BASE && boardId <= ALLWINNER_MAX 
+                && boardId != NanoPi_A64
+                && boardId != NanoPi_NEO_Core) {
+        revision = 1;
+      } else {
+         PyErr_SetString(PyExc_RuntimeError, "This NanoPi model is currently not supported. ");
+         setup_error = 1;
+         #if PY_MAJOR_VERSION > 2
+               return NULL;
+         #else
+               return;
+         #endif
+      }
+    } else {
+         PyErr_SetString(PyExc_RuntimeError, "Is not NanoPi based board. ");
+         setup_error = 1;
+         #if PY_MAJOR_VERSION > 2
+               return NULL;
+         #else
+               return;
+         #endif
+    }
+
+    if (boardId == NanoPi_M1 || boardId == NanoPi_M1_Plus || boardId == NanoPi_M1_Plus2) {
+       pin_to_gpio = &physToGpio_m1;
+    } else if (boardId == NanoPi_NEO || boardId == NanoPi_NEO_Air || boardId == NanoPi_NEO2 || boardId == NanoPi_NEO_Plus2) {
+       pin_to_gpio = &physToGpio_neo;
+    } else if (boardId == NanoPi_Duo) {
+       pin_to_gpio = &physToGpio_duo;
+    } else {
+       pin_to_gpio = NULL;
+    }
 
    rpi_revision = Py_BuildValue("i", revision);
    PyModule_AddObject(module, "RPI_REVISION", rpi_revision);

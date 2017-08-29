@@ -26,6 +26,7 @@ SOFTWARE.
 
 int nanopi_found=0;
 
+/*
 char *get_cpuinfo_revision(char *revision)
 {
   FILE *fp;
@@ -68,3 +69,4 @@ int get_rpi_revision(void)
     return 1;
   }
 }
+*/
