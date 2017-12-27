@@ -63,6 +63,8 @@ int epfd = -1;
 /***  change physToGpio_neo & pinTobcm_BP into physToGpioR3  ***/
 unsigned int gpioToSysPin(unsigned int gpio)
 {
+    return gpio;
+#if 0
 	int i;
 	int lenBP = sizeof(physToGpioR3)/sizeof(int);
 	unsigned int gpioSys;
@@ -76,6 +78,7 @@ unsigned int gpioToSysPin(unsigned int gpio)
 			return gpioSys;
 		}
 	}
+#endif
 }
 /************* /sys/class/gpio functions ************/
 int gpio_export(unsigned int gpio)
