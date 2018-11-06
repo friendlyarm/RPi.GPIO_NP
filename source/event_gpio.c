@@ -56,7 +56,7 @@ struct callback
 struct callback *callbacks = NULL;
 
 pthread_t threads;
-int event_occurred[64] = { 0 };
+int event_occurred[MAX_PIN_COUNT] = { 0 };
 int thread_running = 0;
 int epfd = -1;
 
@@ -87,7 +87,7 @@ int gpio_export(unsigned int gpio)
     int fd, len;
     char str_gpio[3];
 
-D    if ((fd = open("/sys/class/gpio/export", O_WRONLY)) < 0)
+    if ((fd = open("/sys/class/gpio/export", O_WRONLY)) < 0)
        return -1;
 
     len = snprintf(str_gpio, sizeof(str_gpio), "%d", gpioSys);

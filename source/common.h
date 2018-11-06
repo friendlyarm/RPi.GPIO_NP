@@ -29,21 +29,25 @@ SOFTWARE.
 #define I2C          42
 #define PWM          43
 
+#define MAX_PIN_COUNT 74
+
 int gpio_mode;
 const int pin_to_gpio_rev1[27];
 const int pin_to_gpio_rev2[27];
-const int physToGpioR3 [64];
+const int physToGpioR3 [MAX_PIN_COUNT];
 
-const int (*pin_to_gpio)[64];
+const int (*pin_to_gpio)[MAX_PIN_COUNT];
 
-const int physToGpio_neo [64];
-const int physToGpio_m1 [64];
-const int physToGpio_duo [64];
+const int physToGpio_neo [MAX_PIN_COUNT];
+const int physToGpio_m1 [MAX_PIN_COUNT];
+const int physToGpio_duo [MAX_PIN_COUNT];
+const int physToGpio_duo2 [MAX_PIN_COUNT];
+const int physToGpio_neocore [MAX_PIN_COUNT];
 
-// const int pinTobcm_BP [64];
-// const int physToGpioR3 [64];
+// const int pinTobcm_BP [MAX_PIN_COUNT];
+// const int physToGpioR3 [MAX_PIN_COUNT];
 
-int gpio_direction[64];
+int gpio_direction[MAX_PIN_COUNT];
 int revision;
 
 int check_gpio_priv(void);

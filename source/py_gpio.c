@@ -86,7 +86,7 @@ static PyObject *py_cleanup(PyObject *self, PyObject *args, PyObject *kwargs)
          event_cleanup_all();
 
          // set everything back to input
-         for (i=0; i<64; i++) {
+         for (i=0; i<MAX_PIN_COUNT; i++) {
             if (gpio_direction[i] != -1) {
                setup_gpio(i, INPUT, PUD_OFF);
                gpio_direction[i] = -1;
@@ -654,16 +654,14 @@ PyMODINIT_FUNC initGPIO(void)
 
    define_constants(module);
 
-   for (i=0; i<64; i++)
+   for (i=0; i<MAX_PIN_COUNT; i++)
       gpio_direction[i] = -1;
 
     BoardHardwareInfo* retBoardInfo;
-    int boardId;
-    boardId = getBoardType(&retBoardInfo);
-    if (boardId >= 0) {
-      if (boardId > ALLWINNER_BASE && boardId <= ALLWINNER_MAX 
-                && boardId != NanoPi_A64
-                && boardId != NanoPi_NEO_Core) {
+    int ret = getBoardType(&retBoardInfo);
+    if (ret >= 0) {
+      if (retBoardInfo->boardTypeId > ALLWINNER_BASE && retBoardInfo->boardTypeId <= ALLWINNER_MAX 
+                && retBoardInfo->boardTypeId != NanoPi_A64) {
         revision = 1;
       } else {
          PyErr_SetString(PyExc_RuntimeError, "This NanoPi model is currently not supported. ");
@@ -675,7 +673,7 @@ PyMODINIT_FUNC initGPIO(void)
          #endif
       }
     } else {
-         PyErr_SetString(PyExc_RuntimeError, "Is not NanoPi based board. ");
+         PyErr_SetString(PyExc_RuntimeError, "It is not NanoPi based board. ");
          setup_error = 1;
          #if PY_MAJOR_VERSION > 2
                return NULL;
@@ -684,12 +682,18 @@ PyMODINIT_FUNC initGPIO(void)
          #endif
     }
 
-    if (boardId == NanoPi_M1 || boardId == NanoPi_M1_Plus || boardId == NanoPi_M1_Plus2) {
+    int faBoardId = retBoardInfo->boardTypeId;
+
+    if (faBoardId == NanoPi_M1 || faBoardId == NanoPi_M1_Plus || faBoardId == NanoPi_M1_Plus2 || faBoardId == NanoPi_K1_Plus) {
        pin_to_gpio = &physToGpio_m1;
-    } else if (boardId == NanoPi_NEO || boardId == NanoPi_NEO_Air || boardId == NanoPi_NEO2 || boardId == NanoPi_NEO_Plus2) {
+    } else if (faBoardId == NanoPi_NEO || faBoardId == NanoPi_NEO_Air || faBoardId == NanoPi_NEO2 || faBoardId == NanoPi_NEO_Plus2) {
        pin_to_gpio = &physToGpio_neo;
-    } else if (boardId == NanoPi_Duo) {
+    } else if (faBoardId == NanoPi_Duo) {
        pin_to_gpio = &physToGpio_duo;
+    } else if (faBoardId == NanoPi_Duo2) {
+       pin_to_gpio = &physToGpio_duo2;
+    } else if (faBoardId == NanoPi_NEO_Core || faBoardId == NanoPi_NEO_Core2) {
+       pin_to_gpio = &physToGpio_neocore;
     } else {
        pin_to_gpio = NULL;
     }
